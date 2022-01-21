@@ -1,38 +1,43 @@
-import PIL
+from datetime import datetime
+
 from PIL import Image
 from PIL import ImageChops
-from PIL import ImageDraw, ImageFilter
-
-Reference = Image.open(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\reference.png")
-
-Client = Image.open (r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\photo1.png")
-
-Inspection = ImageChops.difference(Reference, Client)
-
-Inspection = Inspection.save(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\Inspection.png")
-
-Inspected = Image.open(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\Inspection.png")
-
-rgba = Inspected.convert("RGBA")
-datas = rgba.getdata()
-  
-newData = []
-for item in datas:
-    if item[0] == 0 and item[1] == 0 and item[2] == 0:  # finding black colour by its RGB value
-        # storing a transparent value when we find a black colour
-        newData.append((255, 255, 255, 0))
-    else:
-        newData.append(item)  # other colours remain unchanged
-  
-rgba.putdata(newData)
-rgba.save(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\Transparent_image.png")
-
-Transparent= Image.open(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\Transparent_image.png")
-
-back_Reference = Reference.copy()
-back_Reference.paste(Transparent, (0,0), Transparent)
-back_Reference.save(r"C:\Users\wierz\Desktop\TUM\TECH Challenge\TC_AIproject\\Complete_Inspection.png")
 
 
-#if Inspection.getbbox() :
-  #  Inspection.show() 
+class ImageDiff:
+    def __init__(self, original: Image, changed: Image) -> None:
+        self._original = original
+        self._changed = changed
+
+    @staticmethod
+    def _add_transparent_fields(pixels_sequences) -> list:
+        pixel_image_with_difference = []
+        transparent_value = (255, 255, 255, 0)
+
+        for pixel_sequence in pixels_sequences:
+            if not any(pixel_sequence[:-1]):
+                pixel_image_with_difference.append(transparent_value)
+            else:
+                pixel_image_with_difference.append(pixel_sequence)
+        return pixel_image_with_difference
+
+    def find_difference(self) -> None:
+        differance = ImageChops.difference(self._original, self._changed).convert("RGBA")
+        pixels_sequences = differance.getdata()
+
+        transparent_fields = self._add_transparent_fields(pixels_sequences)
+
+        differance.putdata(transparent_fields)
+        copied_original = self._original.copy()
+        copied_original.paste(differance, (0, 0), differance)
+
+        date = datetime.now().strftime("%m-%d-%Y%H:%M:%S")
+        copied_original.save(f"result_{date}.png")
+
+
+if __name__ == "__main__":
+    reference = Image.open("reference.png")
+    photo_1 = Image.open("photo1.png")
+
+    image_diff = ImageDiff(reference, photo_1)
+    image_diff.find_difference()
