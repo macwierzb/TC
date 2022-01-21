@@ -46,11 +46,12 @@ class ImageDiff:
 
         logging.info("Applying contours to the orginal image...")
         minimum_contour_area = 100  # I guess its 10 x 10 pixels
+        red_colour = (0, 0, 255)
         for contour in contours:
             area = cv2.contourArea(contour)
             if area > minimum_contour_area:
                 x, y, w, h = cv2.boundingRect(contour)
-                cv2.rectangle(self._original, (x, y), (x + w, y + h), (0, 0, 255), 10)
+                cv2.rectangle(self._original, (x, y), (x + w, y + h), red_colour, 10)
 
     def save_image(self, name: str, image_format: ImageFormat) -> None:
         date = datetime.now().strftime("%m-%d-%Y%H:%M:%S")
