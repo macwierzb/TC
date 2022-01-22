@@ -74,10 +74,11 @@ class ImageDiff:
 
 if __name__ == "__main__":
     project_dir = os.path.dirname(os.path.abspath(__name__))
-    reference = cv2.imread("reference.png")
-    photo_1 = cv2.imread("photo1.png")
-
-    image_diff = ImageDiff(reference, photo_1)
+    reference = str(input("Please specify reference image: "))
+    reference = cv2.imread(reference)
+    changed = str(input("Please specify changed image: "))
+    changed = cv2.imread(changed)
+    image_diff = ImageDiff(reference, changed)
     image_diff.find_difference()
     image_diff.save_image(os.path.join(project_dir, "example"), ImageFormat.JPG)  # save in JPG
     image_diff.save_image(os.path.join(project_dir, "example"), ImageFormat.PNG)  # save in PNG
