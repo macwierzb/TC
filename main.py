@@ -79,10 +79,12 @@ ENGINE_TYPES = {
 
 if __name__ == "__main__":
     project_dir = os.path.dirname(os.path.abspath(__name__))
-    changed = str(input("Please specify changed image: "))
-    changed = cv2.imread(changed)
     reference = str(input("Please specify engine type: "))
     reference = cv2.imread(ENGINE_TYPES[reference])
+
+    changed = str(input("Please specify changed image: "))
+    changed = cv2.imread(changed)
+
 
     image_diff = ImageDiff(reference, changed)
     image_diff.find_difference()
