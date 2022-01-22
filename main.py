@@ -85,7 +85,6 @@ if __name__ == "__main__":
     changed = str(input("Please specify changed image: "))
     changed = cv2.imread(changed)
 
-
     image_diff = ImageDiff(reference, changed)
     image_diff.find_difference()
     image_diff.save_image(os.path.join(project_dir, "example"), ImageFormat.JPG)  # save in JPG
