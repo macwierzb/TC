@@ -64,7 +64,7 @@ class ImageDiff:
 
     def save_image(self, name: str, image_format: ImageFormat) -> None:
         date = datetime.now().strftime("%m-%d-%Y%H:%M:%S")
-        image_name = f"{name}_{date}.{image_format}"
+        image_name = f"test.{image_format}"
         logging.info(f"Saving image {image_name}")
         cv2.imwrite(image_name, self._original)
 
