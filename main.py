@@ -64,11 +64,11 @@ class ImageDiff:
                 cv2.rectangle(self._changed, (x, y), (x + w, y + h), red_colour, 10)
 
     def save_image(self, name: str, image_format: ImageFormat) -> None:
-        for image in ("original", "changed"):
+        for image_name, image in (("original", self._original), ("changed", self._changed)):
             date = datetime.now().strftime("%m%d%Y%H%M%S")
-            image_name = f"{name}_{image}_{date}.{image_format}"
+            image_name = f"{name}_{image_name}_{date}.{image_format}"
             logging.info(f"Saving image {image_name}")
-            status = cv2.imwrite(image_name, self._original)
+            status = cv2.imwrite(image_name, image)
             logging.info(f"Image written to filesystem: {status}")
 
 
