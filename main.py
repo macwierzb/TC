@@ -72,12 +72,18 @@ class ImageDiff:
             logging.info(f"Image written to filesystem: {status}")
 
 
+ENGINE_TYPES = {
+    "123": "reference.png",
+    "345": "reference_2.png"
+}
+
 if __name__ == "__main__":
     project_dir = os.path.dirname(os.path.abspath(__name__))
-    reference = str(input("Please specify reference image: "))
-    reference = cv2.imread(reference)
     changed = str(input("Please specify changed image: "))
     changed = cv2.imread(changed)
+    reference = str(input("Please specify engine type: "))
+    reference = cv2.imread(ENGINE_TYPES[reference])
+
     image_diff = ImageDiff(reference, changed)
     image_diff.find_difference()
     image_diff.save_image(os.path.join(project_dir, "example"), ImageFormat.JPG)  # save in JPG
