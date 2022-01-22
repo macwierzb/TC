@@ -61,13 +61,15 @@ class ImageDiff:
             if area > minimum_contour_area:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(self._original, (x, y), (x + w, y + h), red_colour, 10)
+                cv2.rectangle(self._changed, (x, y), (x + w, y + h), red_colour, 10)
 
     def save_image(self, name: str, image_format: ImageFormat) -> None:
-        date = datetime.now().strftime("%m-%d-%Y%H:%M:%S")
-        image_name = f"test.{image_format}"
-        logging.info(f"Saving image {image_name}")
-        status = cv2.imwrite(image_name, self._original)
-        logging.info(f"Image written to filesystem: {status}")
+        for image in ("original", "changed"):
+            date = datetime.now().strftime("%m%d%Y%H%M%S")
+            image_name = f"{name}_{image}_{date}.{image_format}"
+            logging.info(f"Saving image {image_name}")
+            status = cv2.imwrite(image_name, self._original)
+            logging.info(f"Image written to filesystem: {status}")
 
 
 if __name__ == "__main__":
