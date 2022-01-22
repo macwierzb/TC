@@ -16,10 +16,17 @@ class ImageFormat(StrEnum):
     PNG = "png"
 
 
+def resize_image(image: ndarray, percentage: float = 60.0) -> ndarray:
+    width = int(image.shape[1] * percentage / 100)
+    height = int(image.shape[0] * percentage / 100)
+    dim = (width, height)
+    return cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
+
+
 class ImageDiff:
     def __init__(self, original: ndarray, changed: ndarray) -> None:
-        self._original = original
-        self._changed = changed
+        self._original = resize_image(original)
+        self._changed = resize_image(changed)
 
     @staticmethod
     def _convert_to_gray(image: ndarray) -> ndarray:
