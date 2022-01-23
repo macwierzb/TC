@@ -1,19 +1,20 @@
-import logging
-from datetime import datetime
+import logging # for logging purposes
+from datetime import datetime # for add date and time to picture name
 
-from cv2 import cv2
-from numpy import ndarray
-from skimage.metrics import structural_similarity
-from strenum import StrEnum
+from cv2 import cv2 # for image processing (finding contours, sacling down, converting to gray scale)
+from numpy import ndarray # for adding type hints (you can skip that one in your documentation)
+from skimage.metrics import structural_similarity # for finding the difference between images
+from strenum import StrEnum # for creating ImageFormat string enumeration (you can skip that too)
 
-import os
+import os # for saving file.
 
+# configure logger
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(message)s',
                     handlers=[logging.StreamHandler()])
 
-
 class ImageFormat(StrEnum):
+    """Class responsible for holding image formats."""
     JPG = "jpg"
     PNG = "png"
 
