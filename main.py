@@ -1,5 +1,5 @@
 import logging # for logging purposes
-from datetime import datetime # for add date and time to picture name
+from datetime import datetime # to add date and time to picture name
 
 from cv2 import cv2 # for image processing (finding contours, sacling down, converting to gray scale)
 from numpy import ndarray # for adding type hints (you can skip that one in your documentation)
